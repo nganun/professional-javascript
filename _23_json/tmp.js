@@ -6,6 +6,10 @@ let fn1 = function (a) {
 	console.log("hello");
 };
 
+function zip() {
+	console.log("Hello world");
+}
+
 fn1("good");
 let school = 1;
 let game = "1";

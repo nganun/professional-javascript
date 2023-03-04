@@ -77,7 +77,7 @@ noscript 元素的出现，被用于给不支持 JavaScript 的浏览器提供�
 
 > 定义：ECMAScript3 的一些不规范拍给你发在这种模式下会被处理，对于不安全的活动将抛出错误
 
-    "use strict";
+"use strict";
 
 *   可以单独指定一个函数在严格模式下执行，只需要把这个预处理指令放到函数体开关即可
 
@@ -88,7 +88,34 @@ noscript 元素的出现，被用于给不支持 JavaScript 的浏览器提供�
     *   有助于开发者通过删除空行来压缩代码（如果没有结尾的分号，只删除空行，则会导致语法错误）
     *   加分号在某些情况下有助于提升性能，因为解析器会尝试在合适的位置补上分号以纠正语法错误
 
-#### 3.1.5 关键字与保留字
+#### 3.2 关键字与保留字
+
+> 按照规定，保留的关键字不能用作标识符或属性名
+
+1. 关键字列表
+
+break, case, catch ,calss, const, continue, debugger, default, delete, do,
+else, export, extends, finally, for, fnction, if, import, in, instanceof,
+new, return, super, switch, this, throw, try, type, var, void,
+while, with, yield
+
+2. 未来的保留字
+
+- 始终保留
+
+    enum
+
+- 严格模式下保留
+
+    implements, interface, let, package, protected, private, public, static
+
+- 模块代码中保留
+
+    await
+
+    > 一般来说，不要把关键字与保留字作为标识符，以确保兼容过去和未来的 ECMAScript 版本
+
+### 3.3 变量
 
 ## 4 变量、作用域与内存
 
@@ -140,7 +167,7 @@ JSON: JavaScript Object Notation
 *   对象
 *   数组
 
-JSON 与 JS 的不同点
+    JSON 与 JS 的不同点
 
 *   没有变量声明（JSON 中没有变量），最后也没有分号
 *   属性必需要用双引号包裹起来；手动编写 JSON 时漏掉双引号或者使用单引号是觉错误
@@ -165,29 +192,29 @@ JSON.stringify(value\[, replacer\[, space]])
 
 ```js
 let book = {
-    title: "Professional JavaScript",
-    authors: [
-        "Nicholas C. Zakas",
-        "Matt Frisbie"
-    ],
-    edition: 4,
-    year: 2017
+title: "Professional JavaScript",
+authors: [
+"Nicholas C. Zakas",
+"Matt Frisbie"
+],
+edition: 4,
+year: 2017
 };
 // Example1: 传递数组
 let jsonText = JSON.stringify(book, ["title", "edition"]);
 console.log(jsonText); // {"title":"Professional JavaScript","edition":4}
 // Example2: 传递函数
 jsonText = JSON.stringify(book, (key, value) => {
-  switch(key) {
-    case "authors":
-      return value.join(",");
-    case "year":
-      return 5000;
-    case "edition":
-      return undefined;
-    default:
-      return value;
-  }
+switch(key) {
+case "authors":
+return value.join(",");
+case "year":
+return 5000;
+case "edition":
+return undefined;
+default:
+return value;
+}
 });
 console.log(jsonText); // {"title":"Professional JavaScript","authors":"Nicholas C. Zakas,Matt Frisbie","year":5000}
 // Example3: 字符串缩进 - 数字，默认为空格
@@ -203,43 +230,43 @@ console.log(jsonText);
 *   在 JSON.stringify() 之前自定义 JSON 序列化，此时就要在序列化的对象中添加 toJSON() 方法。
 *   箭头函数不能用来定义 toJSON（) 方法，主要原因是箭头函数的记忆法作用域是全局作用域，在这种情况下不合适。
 
-```js
-let book = {
+    ```js
+    let book = {
     title: "Professional JavaScript",
     authors: [
-        "Nicholas C. Zakas",
-        "Matt Frisbie"
+    "Nicholas C. Zakas",
+    "Matt Frisbie"
     ],
     edition: 4,
     year: 2017,
     toJSON: function() {
-      return this.title;
+    return this.title;
     }
-};
-let jsonText = JSON.stringify(book);
-console.log(jsonText);  // "Professional JavaScript"
-```
+    };
+    let jsonText = JSON.stringify(book);
+    console.log(jsonText);  // "Professional JavaScript"
+    ```
 
 #### 23.2.3 解析选项
 
 *   JSON.parse(text\[, reviver]) 方法也可以传递一个额外的参数,这个函数会针对每个键值对都调用一次.
 
-```js
-let book = {
+    ```js
+    let book = {
     title: "Professional JavaScript",
     authors: [
-        "Nicholas C. Zakas",
-        "Matt Frisbie"
+    "Nicholas C. Zakas",
+    "Matt Frisbie"
     ],
     edition: 4,
     year: 2017,
     releaseDate: new Date(2017, 11, 1)
-};
-let jsonText = JSON.stringify(book);
-console.log(jsonText);  // {"title":"Professional JavaScript","authors":["Nicholas C. Zakas","Matt Frisbie"],"edition":4,"year":2017,"releaseDate":"2017-11-30T16:00:00.000Z"}
-let bookCopy = JSON.parse(jsonText, (key, value) => key == "releaseDate" ? new Date(value) : value);
-console.log(bookCopy.releaseDate.getFullYear());  // 2017
-```
+    };
+    let jsonText = JSON.stringify(book);
+    console.log(jsonText);  // {"title":"Professional JavaScript","authors":["Nicholas C. Zakas","Matt Frisbie"],"edition":4,"year":2017,"releaseDate":"2017-11-30T16:00:00.000Z"}
+    let bookCopy = JSON.parse(jsonText, (key, value) => key == "releaseDate" ? new Date(value) : value);
+    console.log(bookCopy.releaseDate.getFullYear());  // 2017
+    ```
 
 ## 24 网络请求与远程资源
 
@@ -270,20 +297,20 @@ Ajax - Asynchronous\[eɪˈsɪŋkrənəs] JavaScript and XML
     *   4: 完成(Complete)。已经收到所有响应，可以使用了。
 *   `abort()` 方法：在收到响应之前如果想取消异步请求，可以调用 abort() 方法。
 
-```js
-let xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function() {
-  if (xhr.readyState == 4) {
+    ```js
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
     if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
-      console.log(xhr.responseText);
+    console.log(xhr.responseText);
     } else {
-      console.log("Request was unsuccessful: " + xhr.status);
+    console.log("Request was unsuccessful: " + xhr.status);
     }
-  }
-}
-xhr.open("get", "https://img-home.csdnimg.cn/data_json/toolbar/toolbar1105.json", true);
-xhr.send(null);
-```
+    }
+    }
+    xhr.open("get", "https://img-home.csdnimg.cn/data_json/toolbar/toolbar1105.json", true);
+    xhr.send(null);
+    ```
 
 #### 24.1.2 HTTP 头部
 
@@ -298,25 +325,25 @@ xhr.send(null);
 *   getResponseHeader(name) 方法获取响应头部信息
 *   getAllRequestHeaders() 方法获取所有头部信息
 
-```js
-let xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function () {
-  if (xhr.readyState == 4) {
+    ```js
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4) {
     if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
-      console.log(xhr.responseText);
-      let myHeader = xhr.getResponseHeader("MyHeader");
-      let allHeaders = xhr.getAllResponseHeaders();
-      console.log(myHeader);  // null - 很奇怪
-      console.log(allHeaders);
+    console.log(xhr.responseText);
+    let myHeader = xhr.getResponseHeader("MyHeader");
+    let allHeaders = xhr.getAllResponseHeaders();
+    console.log(myHeader);  // null - 很奇怪
+    console.log(allHeaders);
     } else {
-      console.log("Request was unsuccessful: " + xhr.status);
+    console.log("Request was unsuccessful: " + xhr.status);
     }
-  }
-}
-xhr.open("get", "https://img-home.csdnimg.cn/data_json/toolbar/toolbar1105.json", true);
-xhr.setRequestHeader("MyHeader", "MyValue")
-xhr.send(null);
-```
+    }
+    }
+    xhr.open("get", "https://img-home.csdnimg.cn/data_json/toolbar/toolbar1105.json", true);
+    xhr.setRequestHeader("MyHeader", "MyValue")
+    xhr.send(null);
+    ```
 
 #### 24.1.3 GET 请求
 
@@ -332,18 +359,18 @@ URN = Uniform Resource Name 统一资源名称
 *   对于 XHR 而言，查询字符串必须正确编码后添加到 URL 后面，然后再传给 open() 方法。
 *   URL 中的请求参数与值都必须使用 encodeURIComponent() 编码。
 
-```js
-function addURLParam(url, name, value) {
-  url += (url.indexOf("?") == -1 ? "?" : "&");
-  url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
-  return url;
-}
-let url = "example.php"
-url = addURLParam(url, "name", "Nicholas");
-url = addURLParam(url, "book", "Professional Javascript");
-console.log(url); // example.php?name=Nicholas&book=Professional%20Javascript
-xhr.open("get", url, false);
-```
+    ```js
+    function addURLParam(url, name, value) {
+    url += (url.indexOf("?") == -1 ? "?" : "&");
+    url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+    return url;
+    }
+    let url = "example.php"
+    url = addURLParam(url, "name", "Nicholas");
+    url = addURLParam(url, "book", "Professional Javascript");
+    console.log(url); // example.php?name=Nicholas&book=Professional%20Javascript
+    xhr.open("get", url, false);
+    ```
 
 #### 24.1.4 POST 请求
 
@@ -351,12 +378,12 @@ xhr.open("get", url, false);
 *   使用 XHR 模拟表单提交；把 Content-Type 头部设置为 "application/x-www-formurlencoded"，这是提交表单时使用的内容类型
 *   创建对应格式的字符串。如果确实有一个表单需要序列化并通过 XHR 发送到服务器，可以使用 serialize() 函数来创建应用的字符串
 
-```js
-xhr.open("post", postexample.php", true);
-xhr.setRequestHeader("Content-Type", "application/-x-www-formurlencoded");
-let form = document.getElementById("user-info");
-xhr.send(serialize(form));
-```
+    ```js
+    xhr.open("post", postexample.php", true);
+    xhr.setRequestHeader("Content-Type", "application/-x-www-formurlencoded");
+    let form = document.getElementById("user-info");
+    xhr.send(serialize(form));
+    ```
 
 #### 24.1.5 XMLHttpRequest Level 2
 
@@ -369,38 +396,38 @@ xhr.send(serialize(form));
     *   let data = new FormData(document.forms\[0]);
 *   不再需要给 XHR 对象显示设置任何请头部。
 
-```js
-xhr.open("post", postexample.php", true);
-let form = document.getElementById("user-info");
-xhr.send(new FormData(form)));
-```
+    ```js
+    xhr.open("post", postexample.php", true);
+    let form = document.getElementById("user-info");
+    xhr.send(new FormData(form)));
+    ```
 
 ##### 超时
 
 *   给 timeout 属性设置了一个时间，且在该时间内没有收到响应时，中断请求，XHR 对象就会触发 timeout 事件。
 *   在超时之后访问 status 属性会发生错误。为做好防护，可以把检查 status 属性的代码封装在 try/catch 语句中。
 
-```js
-let xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function () {
-  try {
+    ```js
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+    try {
     if (xhr.readyState == 4) {
-      if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
-        console.log(xhr.responseText);
-      } else {
-        console.log("Request was unsuccessful: " + xhr.status);
-      }
+    if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
+    console.log(xhr.responseText);
+    } else {
+    console.log("Request was unsuccessful: " + xhr.status);
     }
-  } catch (ex) {
-  }
-}
-xhr.open("get", "https://img-home.csdnimg.cn/data_json/toolbar/toolbar1105.json", true);
-xhr.timeout = 1000;
-xhr.ontimeout = function () {
-  console.log("Request didn't not return in a second.")
-}
-xhr.send(null);
-```
+    }
+    } catch (ex) {
+    }
+    }
+    xhr.open("get", "https://img-home.csdnimg.cn/data_json/toolbar/toolbar1105.json", true);
+    xhr.timeout = 1000;
+    xhr.ontimeout = function () {
+    console.log("Request didn't not return in a second.")
+    }
+    xhr.send(null);
+    ```
 
 ##### overrideMineType() 方法
 
@@ -427,18 +454,18 @@ xhr.send(null);
 *   以 load 事件替代 readystatechange 事件，简化交互模式；就不用再检查 readyState 属性了
 *   onload 事件处理程序会收到一个 event 对象，其 target 属性设置为 XHR 实例。
 
-```js
-let xhr = new XMLHttpRequest();
-xhr.onload = function() {
-  if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+    ```js
+    let xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+    if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
     alert(xhr.responseText);
-  } else {
+    } else {
     alert("Response was unsuccessful: " + xhr.status); 
-  }
-};
-xhr.open("get", "altevents.php", true);
-xhr.send(null);
-```
+    }
+    };
+    xhr.open("get", "altevents.php", true);
+    xhr.send(null);
+    ```
 
 #### 24.2.2 progress 事件
 
@@ -449,25 +476,25 @@ xhr.send(null);
     *   totalSize: 是响应的 Content-Length 头部定义的总字节数
 *   为了保证正确执行，必须在调用 open() 之前添加 onprogress 事件处理程序。
 
-```js
-let xhr = new XMLHttpRequest();
-xhr.onload = function() {
-  if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+    ```js
+    let xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+    if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
     alert(xhr.responseText);
-  } else {
+    } else {
     alert("Response was unsuccessful: " + xhr.status); 
-  }
-};
-// 每次更新，可以看到接收数据的百分比
-xhr.onprogress = function() {
-  let divStatus = document.getElementById("status");
-  if (event.lengthComputable) {
+    }
+    };
+    // 每次更新，可以看到接收数据的百分比
+    xhr.onprogress = function() {
+    let divStatus = document.getElementById("status");
+    if (event.lengthComputable) {
     divStatus.innerHtml = "Received " + event.position + " of " + event.totalSize + " bytes"; 
-  }
-}
-xhr.open("get", "altevents.php", true);
-xhr.send(null);
-```
+    }
+    }
+    xhr.open("get", "altevents.php", true);
+    xhr.send(null);
+    ```
 
 ### 24.3 跨源资源共享
 
@@ -497,15 +524,15 @@ xhr.send(null);
     *   `callback({"name": "Nicholas"});`
 *   JSONP 格式包含两部分：回调和数据。回调是页面接收到响应之后应该调用的函数，通常回调函数的名称是通过请求来动态指定的。而数据就是作为参数传递给回调函数函数的 JSON 数据。
 
-```js
-function handleResponse(response) {
-  console.log(`You're at IP address ${response.ip}, which is in ${response.city}, 
-  ${response.region_name}.`)
-}
-let script = document.createElement("script");
-script.src = "http://freegeoip.net/json/?callback=handleResponse";
-document.body.insertBefore(script, document.body.firstChild);
-```
+    ```js
+    function handleResponse(response) {
+    console.log(`You're at IP address ${response.ip}, which is in ${response.city}, 
+    ${response.region_name}.`)
+    }
+    let script = document.createElement("script");
+    script.src = "http://freegeoip.net/json/?callback=handleResponse";
+    document.body.insertBefore(script, document.body.firstChild);
+    ```
 
 ### 24.5 Fetch API
 
@@ -517,26 +544,26 @@ document.body.insertBefore(script, document.body.firstChild);
 
 *   fetch() 只有一个必需的参数 input，多数情况下这个参数是要获取资源的 URL。这个方法返回一个期约。
 
-```js
-fetch({type: "basic", url: "github.com"})
-  .then(response => {
+    ```js
+    fetch({type: "basic", url: "github.com"})
+    .then(response => {
     console.log(response); // Response {type: "basic", url: ...}
-  });
-```
+    });
+    ```
 
 ##### 读取响应
 
 ```js
 fetch("bar.txt")
-    .then(response => {
-        response.text().then(data => {
-            console.log(data);
-        })
-    });
+.then(response => {
+response.text().then(data => {
+console.log(data);
+})
+});
 // 上下等同
 fetch("bar.txt")
-    .then(response => response.text())
-    .then(data => console.log(data));
+.then(response => response.text())
+.then(data => console.log(data));
 ```
 
 ##### 处理状态码和请求失败
@@ -545,30 +572,30 @@ fetch("bar.txt")
 *   response.statusText: 状态文本
 *   response.ok: boolean
 
-```js
-// 成功获取响应请求
-fetch("bar.txt")
-  .then(resp => console.log(resp.status, resp.statusText)); // 200 OK
-// 请求不存在的资源
-fetch("/does-not-exist")
-  .then(resp => console.log(resp.status, resp.statusText)); // 404 Not Found
-// 服务器错误
-fetch("/throw-server-error")
-  .then(resp => console.log(resp.status, resp.statusText)); // 500 Internal Server Error
-// 服务器没有响应而导致浏览器超时
-fetch("/hangs-forever")
-  .then(response => console.log(response), err => console.log(err)); // TypeError: "NetworkError when attempting to fetch resource"
-```
+    ```js
+    // 成功获取响应请求
+    fetch("bar.txt")
+    .then(resp => console.log(resp.status, resp.statusText)); // 200 OK
+    // 请求不存在的资源
+    fetch("/does-not-exist")
+    .then(resp => console.log(resp.status, resp.statusText)); // 404 Not Found
+    // 服务器错误
+    fetch("/throw-server-error")
+    .then(resp => console.log(resp.status, resp.statusText)); // 500 Internal Server Error
+    // 服务器没有响应而导致浏览器超时
+    fetch("/hangs-forever")
+    .then(response => console.log(response), err => console.log(err)); // TypeError: "NetworkError when attempting to fetch resource"
+    ```
 
 *   通过 url 属性检测通过 fetch() 发送请求时使用的完整 URL
 
-```js
-window.location.href  // 'https://segmentfault.com/a/1190000041305485'
-fetch('qux').then(resp => console.log(resp.url)); // https://segmentfault.com/a/qux
-fetch('/qux').then(resp => console.log(resp.url));  // https://segmentfault.com/qux
-fetch('//qux').then(resp => console.log(resp.url)); // https://qux/
-fetch('https://qux.com').then(resp => console.log(resp.url)); // https://qux.com/
-```
+    ```js
+    window.location.href  // 'https://segmentfault.com/a/1190000041305485'
+    fetch('qux').then(resp => console.log(resp.url)); // https://segmentfault.com/a/qux
+    fetch('/qux').then(resp => console.log(resp.url));  // https://segmentfault.com/qux
+    fetch('//qux').then(resp => console.log(resp.url)); // https://qux/
+    fetch('https://qux.com').then(resp => console.log(resp.url)); // https://qux.com/
+    ```
 
 ##### 自定义选项
 
@@ -605,9 +632,9 @@ fetch('https://qux.com').then(resp => console.log(resp.url)); // https://qux.com
 let payload = JSON.stringify({foo: 'bar'});
 let jsonHeaders = new Headers({'Content-Type': 'application/json'});
 fetch('/send-me-json', {
-  method: 'POST', // 发送请求时必须使用一种 HTTP 方法
-  body: payload,
-  headers: jsonHeaders
+method: 'POST', // 发送请求时必须使用一种 HTTP 方法
+body: payload,
+headers: jsonHeaders
 });
 ```
 
@@ -617,9 +644,9 @@ fetch('/send-me-json', {
 let payload = 'foo=bar&baz=qux';
 let paramHeaders = new Headers({'application/x-www-form-urlencoded; charset=UTF-8});
 fetch('/send-me-params', {
-  method: 'POST', // 发送请求时必须使用一种 HTTP 方法
-  body: payload,
-  headers: paramHeaders
+method: 'POST', // 发送请求时必须使用一种 HTTP 方法
+body: payload,
+headers: paramHeaders
 });
 ```
 
@@ -632,18 +659,18 @@ let imageFormData = new FormData();
 let imageInput = document.querySelector("input[type='file']");
 imageFormData.append('image', imageInput.files[0]);
 fetch('/img-upload', {
-  method: 'POST', // 发送请求时必须使用一种 HTTP 方法
-  body: imageFormData
+method: 'POST', // 发送请求时必须使用一种 HTTP 方法
+body: imageFormData
 });
 // 多个文件
 let imageFormData = new FormData();
 let imageInput = document.querySelector("input[type='file'][multiple]");
 for (let i = 0; i < imageInput.files.length; i++) {
-  imageFormData.append('image', imageInput.files[i]);
+imageFormData.append('image', imageInput.files[i]);
 }
 fetch('/img-upload', {
-  method: 'POST', // 发送请求时必须使用一种 HTTP 方法
-  body: imageFormData
+method: 'POST', // 发送请求时必须使用一种 HTTP 方法
+body: imageFormData
 });
 ```
 
@@ -652,10 +679,10 @@ fetch('/img-upload', {
 ```js
 const imageElement = document.querySelector('img');
 fetch('my-image.png')
-  .then(resp => resp.blob())
-  .then(blob => {
-    imageElement.src = URL.createObjectURL(blob);
-  });
+.then(resp => resp.blob())
+.then(blob => {
+imageElement.src = URL.createObjectURL(blob);
+});
 ```
 
 ##### 5 发送跨源请求
@@ -665,22 +692,22 @@ fetch('my-image.png')
     *   No 'Access-Control-Allow-Origin' header is present on the requested resource.
 *   如果代码不需要访问响应，也可以发送 no-cors 请求。此时响应的 type 属性值为 opaque，因此无法读取响应内容。这种方式适合改善探测请求或者将响应缓存起来供以后使用。
 
-```js
-fetch('//cross-origin.com', {method:; 'no-cors'})
-  .then(resp => console.log(resp.type))
-```
+    ```js
+    fetch('//cross-origin.com', {method:; 'no-cors'})
+    .then(resp => console.log(resp.type))
+    ```
 
 ##### 6 中断请求
 
 *   Fetch API 支持通过 AbortController/AbortSignal 对中断请求。
 
-```js
-let abortController = new AbortController();
-fetch('wikipedia.zip', {signal: abortController.signal})
-  .catch(() => console.log('aborted!'));
-// 10 毫秒后中断请求
-setTimeout(() => abortController.abort(), 10);
-```
+    ```js
+    let abortController = new AbortController();
+    fetch('wikipedia.zip', {signal: abortController.signal})
+    .catch(() => console.log('aborted!'));
+    // 10 毫秒后中断请求
+    setTimeout(() => abortController.abort(), 10);
+    ```
 
 ## 25 客户端存储
 
