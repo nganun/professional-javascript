@@ -1,0 +1,7 @@
+(() => {
+    "use static";
+    var eval = 10;
+    var arguments = 'abc';
+    console.log(`eval:${eval}, arguments:${arguments}`);
+    console.log("Hello world")
+})();
