@@ -121,6 +121,48 @@ while, with, yield
 
 ## 5 基本引用类型
 
+### 5.1 Date
+
+> UTC: Universal Time Coordinated, 自协调世界时。Date 类型将日期保存为 1970 年 1 月 1 日零时至今所有经过的毫秒数
+
+```js
+let now = new Date();
+```
+
+在不给 Date 构造函数传参的情况下，创建的对象将保存当前日期和时间。
+要基于其他日期和时间创建日期对象，必须传入基毫秒表示（UNIX纪元 1970 年 1 月 1 日午夜之后的毫秒数）。
+ECMAScript 为此提供了两个辅助方法：Date.parse() 和 Date.UTC()
+
+1. Date.parse()
+
+Date.parse() 方法接收一个表示日期的字符串参数，尝试将这个字符串转换为该日期的毫秒数
+
+- "month/day/year", example "5/23/2019"
+- "month name day, year", example "May 23, 2019"
+- "周几 月名 日 年 时:分:秒 时区"，如 "Tue May 23 2019 00:00:00 GMT-0700"
+
+```js
+let someDate = new Date(Date.parse("May 23, 2019"));
+let someDate = new Date("May 23, 2019") // same to above, Date 会在后台调用 Date.parse()
+```
+
+2. Date.UTC();
+
+参数为年、零起点月数（0~11）、日（1~31）、时（0~23）、分、秒和毫秒。这些参数中只有前两个是必需的。如果不提供日，那么默认为1日。其它参数的默认值都为零
+
+```js
+// GMT 时间 2000 年 1 月 1 日零点
+let y2k = new Date(Date.UTC(2000, 0))
+// GMT 时间 2005 年 5 月 5 日下午 5 点 55 分 55 秒
+let allFives = new Date(Date.UTC(2005, 4, 5, 17, 55, 55))
+let allFives = new Date(2005, 4, 5, 17, 55, 55)
+// Date.UTC() 也会被 Date 构造函数隐式调用
+```
+
+3. Date.now()
+
+
+
 ## 6 集合引用类型
 
 ## 7 迭代器与生成器
